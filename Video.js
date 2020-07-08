@@ -1,6 +1,6 @@
-import React, {Component} from 'react';
+import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import {StyleSheet, requireNativeComponent, NativeModules, View, ViewPropTypes, Image, Platform, findNodeHandle} from 'react-native';
+import { StyleSheet, requireNativeComponent, NativeModules, View, ViewPropTypes, Image, Platform, findNodeHandle } from 'react-native';
 import resolveAssetSource from 'react-native/Libraries/Image/resolveAssetSource';
 import TextTrackType from './TextTrackType';
 import FilterType from './FilterType';
@@ -20,7 +20,7 @@ export default class Video extends Component {
     super(props);
 
     this.state = {
-      showPoster: !!props.poster
+      showPoster: !!props.poster,
     };
   }
 
@@ -30,12 +30,12 @@ export default class Video extends Component {
 
   toTypeString(x) {
     switch (typeof x) {
-      case "object":
+      case 'object':
         return x instanceof Date
           ? x.toISOString()
           : JSON.stringify(x); // object, null
-      case "undefined":
-        return "";
+      case 'undefined':
+        return '';
       default: // boolean, number, string
         return x.toString();
     }
@@ -52,14 +52,14 @@ export default class Video extends Component {
   }
 
   seek = (time, tolerance = 100) => {
-    if (isNaN(time)) throw new Error('Specified time is not a number');
+    if (isNaN(time)) {throw new Error('Specified time is not a number');}
 
     if (Platform.OS === 'ios') {
       this.setNativeProps({
         seek: {
           time,
-          tolerance
-        }
+          tolerance,
+        },
       });
     } else {
       this.setNativeProps({ seek: time });
@@ -88,7 +88,7 @@ export default class Video extends Component {
 
   _hidePoster = () => {
     if (this.state.showPoster) {
-      this.setState({showPoster: false});
+      this.setState({ showPoster: false });
     }
   }
 
@@ -172,7 +172,7 @@ export default class Video extends Component {
     if (!this.props.audioOnly) {
       this._hidePoster();
     }
-    
+
     if (this.props.onReadyForDisplay) {
       this.props.onReadyForDisplay(event.nativeEvent);
     }
@@ -215,7 +215,7 @@ export default class Video extends Component {
   };
 
   _onRestoreUserInterfaceForPictureInPictureStop = (event) => {
-  	if (this.props.onRestoreUserInterfaceForPictureInPictureStop) {
+    if (this.props.onRestoreUserInterfaceForPictureInPictureStop) {
       this.props.onRestoreUserInterfaceForPictureInPictureStop();
     }
   };
@@ -243,7 +243,7 @@ export default class Video extends Component {
     const resizeMode = this.props.resizeMode;
     const source = resolveAssetSource(this.props.source) || {};
     const alternativeAudioSource = resolveAssetSource(this.props.alternativeAudioSource) || {};
-    const shouldCache = !Boolean(source.__packager_asset)
+    const shouldCache = !source.__packager_asset;
 
     let alternativeAudioURI = alternativeAudioSource.uri || '';
     let uri = source.uri || '';
@@ -284,7 +284,7 @@ export default class Video extends Component {
         type: source.type || '',
         mainVer: source.mainVer || 0,
         patchVer: source.patchVer || 0,
-        requestHeaders: source.headers ? this.stringsOnlyObject(source.headers) : {}
+        requestHeaders: source.headers ? this.stringsOnlyObject(source.headers) : {},
       },
       onVideoLoadStart: this._onLoadStart,
       onVideoLoad: this._onLoad,
@@ -333,29 +333,29 @@ export default class Video extends Component {
 
 Video.propTypes = {
   filter: PropTypes.oneOf([
-      FilterType.NONE,
-      FilterType.INVERT,
-      FilterType.MONOCHROME,
-      FilterType.POSTERIZE,
-      FilterType.FALSE,
-      FilterType.MAXIMUMCOMPONENT,
-      FilterType.MINIMUMCOMPONENT,
-      FilterType.CHROME,
-      FilterType.FADE,
-      FilterType.INSTANT,
-      FilterType.MONO,
-      FilterType.NOIR,
-      FilterType.PROCESS,
-      FilterType.TONAL,
-      FilterType.TRANSFER,
-      FilterType.SEPIA
+    FilterType.NONE,
+    FilterType.INVERT,
+    FilterType.MONOCHROME,
+    FilterType.POSTERIZE,
+    FilterType.FALSE,
+    FilterType.MAXIMUMCOMPONENT,
+    FilterType.MINIMUMCOMPONENT,
+    FilterType.CHROME,
+    FilterType.FADE,
+    FilterType.INSTANT,
+    FilterType.MONO,
+    FilterType.NOIR,
+    FilterType.PROCESS,
+    FilterType.TONAL,
+    FilterType.TRANSFER,
+    FilterType.SEPIA,
   ]),
   filterEnabled: PropTypes.bool,
   /* Native only */
   src: PropTypes.object,
   seek: PropTypes.oneOfType([
     PropTypes.number,
-    PropTypes.object
+    PropTypes.object,
   ]),
   fullscreen: PropTypes.bool,
   onVideoLoadStart: PropTypes.func,
@@ -377,10 +377,10 @@ Video.propTypes = {
   /* Wrapper component */
   source: PropTypes.oneOfType([
     PropTypes.shape({
-      uri: PropTypes.string
+      uri: PropTypes.string,
     }),
     // Opaque type returned by require('./video.mp4')
-    PropTypes.number
+    PropTypes.number,
   ]),
   minLoadRetryCount: PropTypes.number,
   maxBitRate: PropTypes.number,
@@ -394,22 +394,22 @@ Video.propTypes = {
     type: PropTypes.string.isRequired,
     value: PropTypes.oneOfType([
       PropTypes.string,
-      PropTypes.number
-    ])
+      PropTypes.number,
+    ]),
   }),
   selectedVideoTrack: PropTypes.shape({
     type: PropTypes.string.isRequired,
     value: PropTypes.oneOfType([
       PropTypes.string,
-      PropTypes.number
-    ])
+      PropTypes.number,
+    ]),
   }),
   selectedTextTrack: PropTypes.shape({
     type: PropTypes.string.isRequired,
     value: PropTypes.oneOfType([
       PropTypes.string,
-      PropTypes.number
-    ])
+      PropTypes.number,
+    ]),
   }),
   textTracks: PropTypes.arrayOf(
     PropTypes.shape({
@@ -420,7 +420,7 @@ Video.propTypes = {
         TextTrackType.TTML,
         TextTrackType.VTT,
       ]),
-      language: PropTypes.string.isRequired
+      language: PropTypes.string.isRequired,
     })
   ),
   paused: PropTypes.bool,
@@ -436,6 +436,7 @@ Video.propTypes = {
   rate: PropTypes.number,
   pictureInPicture: PropTypes.bool,
   playInBackground: PropTypes.bool,
+  preferredForwardBufferDuration: PropTypes.number,
   playWhenInactive: PropTypes.bool,
   ignoreSilentSwitch: PropTypes.oneOf(['ignore', 'obey']),
   reportBandwidth: PropTypes.bool,
@@ -444,7 +445,7 @@ Video.propTypes = {
   audioOnly: PropTypes.bool,
   currentTime: PropTypes.number,
   fullscreenAutorotate: PropTypes.bool,
-  fullscreenOrientation: PropTypes.oneOf(['all','landscape','portrait']),
+  fullscreenOrientation: PropTypes.oneOf(['all', 'landscape', 'portrait']),
   progressUpdateInterval: PropTypes.number,
   paddingBottonTrack: PropTypes.number,
   fontSizeTrack: PropTypes.number,
